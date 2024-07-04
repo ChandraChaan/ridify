@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:rydify/presentation/profile_screen.dart';
 
-class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+class VerifyScreen extends StatefulWidget {
+  final String email;
+
+  const VerifyScreen({super.key, required this.email});
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
+class _VerifyScreenState extends State<VerifyScreen> {
   late String otp = ''; // Variable to store OTP
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF3F1F8),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Page Title'),
-        centerTitle: false,
-        elevation: 2,
-      ),
+      backgroundColor: const Color(0xFFF3F1F8),
       body: SafeArea(
         top: true,
         child: Column(
           mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
               child: Align(
-                alignment: Alignment.topCenter,
+                alignment: Alignment.center,
                 child: Container(
                   width: 397,
                   height: 445,
@@ -35,28 +33,28 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     borderRadius: BorderRadius.circular(16),
                     color: Colors.white, // Adjust as per your design
                   ),
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Enter Verification code',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
-                        'Code was sent to info@gmail.com',
-                        style: TextStyle(
+                        'Code was sent to ${widget.email}',
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Container(
+                      const SizedBox(height: 16),
+                      SizedBox(
                         width: 250, // Adjust as per your design
                         child: TextField(
                           keyboardType: TextInputType.number,
@@ -75,47 +73,50 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
                           // Handle OTP submission logic here
                           if (otp.length == 6) {
                             // Example validation logic
-                            showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                title: Text('OTP Verified'),
-                                content: Text('You have entered a valid OTP: $otp'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (_) => AlertDialog(
+                            //     title: const Text('OTP Verified'),
+                            //     content: Text('You have entered a valid OTP: $otp'),
+                            //     actions: <Widget>[
+                            //       TextButton(
+                            //         onPressed: () {
+                            //           Navigator.of(context).pop();
+                            //         },
+                            //         child: const Text('OK'),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // );
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ProfileScreen()));
                           } else {
                             // Show error message if OTP is not valid
                             showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
-                                title: Text('Invalid OTP'),
-                                content: Text('Please enter a valid OTP.'),
+                                title: const Text('Invalid OTP'),
+                                content:
+                                    const Text('Please enter a valid OTP.'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('OK'),
+                                    child: const Text('OK'),
                                   ),
                                 ],
                               ),
                             );
                           }
                         },
-                        child: Text('Submit'),
+                        child: const Text('Submit'),
                       ),
                     ],
                   ),

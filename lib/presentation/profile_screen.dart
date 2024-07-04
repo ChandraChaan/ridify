@@ -1,14 +1,15 @@
-
 import 'package:flutter/material.dart';
 
-class UserprofileWidget extends StatefulWidget {
-  const UserprofileWidget({Key? key}) : super(key: key);
+import 'edit_profile_screen.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<UserprofileWidget> createState() => _UserprofileWidgetState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _UserprofileWidgetState extends State<UserprofileWidget> {
+class _ProfileScreenState extends State<ProfileScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -20,7 +21,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_rounded,
               size: 30,
             ),
@@ -30,15 +31,21 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
           ),
           title: Row(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Container(
                 width: 30,
                 height: 28,
-                decoration: BoxDecoration(),
-                child: Icon(
-                  Icons.edit_outlined,
-                  size: 24,
+                decoration: const BoxDecoration(),
+                child: IconButton(onPressed: (){
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const EditProfileScreen()));
+                },
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    size: 24,
+                  ),
                 ),
               ),
             ],
@@ -55,7 +62,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       children: [
                         Padding(
@@ -69,11 +76,11 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                     child: Container(
                       width: 100,
                       height: 100,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
                             Colors.blue,
@@ -96,7 +103,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                       ),
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       children: [
                         Padding(
@@ -111,23 +118,23 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                   ),
                 ],
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                 child: Text(
                   'Siva krishna Reddy',
                   textAlign: TextAlign.center,
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
                   child: Container(
                     width: double.infinity,
                     height: 400,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 3,
@@ -142,14 +149,14 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                     ),
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'My Stats',
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Wrap(
                               spacing: 16,
                               runSpacing: 16,
@@ -165,29 +172,29 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
                                 _buildStatItem('56.4k', 'Customers', Icons.supervisor_account_rounded, context),
                               ],
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Align(
-                              alignment: AlignmentDirectional(-1, 0),
+                              alignment: const AlignmentDirectional(-1, 0),
                               child: Container(
                                 width: 30,
                                 height: 30,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(4),
                                   ),
                                 ),
                               ),
                             ),
-                            SizedBox(height: 8),
-                            Align(
+                            const SizedBox(height: 8),
+                            const Align(
                               alignment: AlignmentDirectional(0, 1),
                               child: Icon(
                                 Icons.loop_outlined,
                                 size: 24,
                               ),
                             ),
-                            SizedBox(height: 8),
-                            Align(
+                            const SizedBox(height: 8),
+                            const Align(
                               alignment: AlignmentDirectional(0, 1),
                             ),
                           ],
@@ -219,7 +226,7 @@ class _UserprofileWidgetState extends State<UserprofileWidget> {
             icon,
             size: 24,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(value),
           Text(label),
         ],
