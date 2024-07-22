@@ -68,7 +68,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             alignment: const AlignmentDirectional(1, 0),
                             child: Icon(
                               Icons.edit_rounded,
-                              color: Theme.of(context).textTheme.bodyText2!.color,
+                              color: Theme.of(context).textTheme.bodyMedium!.color,
                               size: 24,
                             ),
                           ),
@@ -80,7 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                     child: Text(
                       'Create your Profile',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         fontFamily: 'Outfit',
                         color: Theme.of(context).primaryColor,
                         fontSize: 22,

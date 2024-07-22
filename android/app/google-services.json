@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "782395919384",
+    "project_id": "rydifyco-e6353",
+    "storage_bucket": "rydifyco-e6353.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782395919384:android:34be7c5a0b68112189076d",
+        "android_client_info": {
+          "package_name": "com.rydify.rydify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz6QwHlZU0udeLOCWVtivISigksq26ahk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

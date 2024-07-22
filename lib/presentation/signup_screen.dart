@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'verify_screen.dart';
 
@@ -87,11 +88,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       return;
     }
-
+    storeUser();
     // Example: Navigate to home screen on successful login
     // Navigator.of(context).pushReplacementNamed('/home');
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => VerifyScreen(email: _emailController.text,)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => VerifyScreen(
+              email: _emailController.text,
+            )));
+  }
+
+  Future<void> storeUser() async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    try {
+      // Insert email into Firestore
+      await _firestore.collection('users').add({
+        'password': _passwordController.text,
+        'type': 'user',
+        'username': _emailController.text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      print('Email stored successfully');
+    } catch (e) {
+      print('Error storing email: $e');
+    }
   }
 
   @override
@@ -164,7 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _login,
-                  child: const Text('Login'),
+                  child: const Text('Signup'),
                 ),
               ),
             ],
