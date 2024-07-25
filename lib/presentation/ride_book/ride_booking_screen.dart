@@ -1,17 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:rydify/presentation/ride_book/ride_booking_screen.dart';
 
-class CarHomePageScreen extends StatefulWidget {
-  const CarHomePageScreen({super.key});
+import 'car_homepage_screen.dart';
+
+class RideBookingScreen extends StatefulWidget {
+  const RideBookingScreen({super.key});
 
   @override
-  State<CarHomePageScreen> createState() => _CarHomePageScreenState();
+  _RideBookingScreenState createState() => _RideBookingScreenState();
 }
 
-class _CarHomePageScreenState extends State<CarHomePageScreen> {
+class _RideBookingScreenState extends State<RideBookingScreen> {
   TimeOfDay? selectedTime;
+  DateTime? selectedDate;
   int passengers = 1;
 
   Future<void> _selectTime(BuildContext context) async {
@@ -139,22 +139,20 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      appBar: AppBar(
+        title: const Text('Ride Booking'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const CarHomePageScreen()));
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: ListView(
-          padding: const EdgeInsets.all(16.0),
           children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Your Pick of Ride at a Lower Price',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            Image.asset(
-              'assets/images/car_illustration.png',
-              // Make sure to add the appropriate image asset
-              height: 200,
-            ),
             const SizedBox(height: 20),
             InkWell(
               onTap: () {
@@ -308,43 +306,91 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RideBookingScreen()));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff016683),
-                  minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                child: const Text('Search',
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
-              ),
+            const SizedBox(height: 20),
+            const Text(
+              'Available Drivers For You',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 10),
+            _buildDriverCard('Daniel Austin', '\$120.00', 'BMW Cabrio',
+                '3 seats', 'assets/images/driver1.png'),
+            _buildDriverCard('Daniel Austin', '\$120.00', 'BMW Cabrio',
+                '3 seats', 'assets/images/driver2.png'),
+            _buildDriverCard('Daniel Austin', '\$120.00', 'BMW Cabrio',
+                '3 seats', 'assets/images/driver3.png'),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_taxi),
-            label: 'Ride',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-        ],
-        selectedItemColor: const Color(0xff016683),
+    );
+  }
+
+  Widget _buildDriverCard(String name, String price, String carModel,
+      String seats, String imagePath) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(imagePath),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    price,
+                    style: const TextStyle(color: Colors.green, fontSize: 14),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '$carModel | $seats',
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle view details action
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text('View Details'),
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle pay and book action
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text('Pay & Book'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
