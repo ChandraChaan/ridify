@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:rydify/presentation/ride_book/ride_booking_screen.dart';
 
 class CarHomePageScreen extends StatefulWidget {
@@ -13,6 +12,10 @@ class CarHomePageScreen extends StatefulWidget {
 class _CarHomePageScreenState extends State<CarHomePageScreen> {
   TimeOfDay? selectedTime;
   int passengers = 1;
+  final fromText = TextEditingController();
+  final toText = TextEditingController();
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
@@ -22,13 +25,14 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
     if (pickedTime != null && pickedTime != selectedTime) {
       setState(() {
         selectedTime = pickedTime;
+        timeController.text = selectedTime!.format(context);
       });
     }
   }
 
   void _incrementPassengers() {
     setState(() {
-      passengers++;
+      if (passengers < 6) passengers++;
     });
   }
 
@@ -76,7 +80,12 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                    controller: fromText,
+                    onChanged: (String? valve) {
+                      fromText.text = valve!;
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
                       labelText: 'From',
                       prefixIcon: Icon(Icons.my_location),
@@ -84,7 +93,12 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                    controller: toText,
+                    onChanged: (String? valve) {
+                      toText.text = valve!;
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
                       labelText: 'To',
                       prefixIcon: Icon(Icons.location_on),
@@ -166,13 +180,13 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 height: 50,
-                child: const Row(
+                child: Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.my_location),
                     ),
-                    Text('From'),
+                    Text(fromText.text.isNotEmpty ? fromText.text : 'From'),
                   ],
                 ),
               ),
@@ -188,13 +202,13 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 height: 50,
-                child: const Row(
+                child: Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.location_on),
                     ),
-                    Text('To'),
+                    Text(toText.text.isNotEmpty ? toText.text : 'To'),
                   ],
                 ),
               ),
@@ -205,6 +219,7 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                 Expanded(
                   flex: 1,
                   child: TextField(
+                    controller: dateController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Date',
@@ -218,7 +233,10 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                         lastDate: DateTime(2101),
                       );
                       if (pickedDate != null) {
-                        // Handle the selected date
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                        dateController.text = formattedDate;
+                        setState(() {});
                       }
                     },
                     readOnly: true,
@@ -228,11 +246,10 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                 Expanded(
                   flex: 1,
                   child: TextField(
+                    controller: timeController,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      labelText: selectedTime == null
-                          ? 'Time'
-                          : selectedTime!.format(context),
+                      labelText: 'Time',
                       prefixIcon: const Icon(Icons.access_time),
                     ),
                     readOnly: true,
