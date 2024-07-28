@@ -367,9 +367,16 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Available Drivers For You',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Icon(Icons.circle,color: Colors.green,size: 20,),
+                const SizedBox(width: 8),
+
+                const Text(
+                  'Available Drivers For You',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             _buildDriverCard('Daniel Austin', '\$120.00', 'BMW Cabrio',
