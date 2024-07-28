@@ -44,6 +44,7 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
     });
   }
 
+
   showBottomSheetDailog(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -83,10 +84,10 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                   TextField(
                     controller: fromText,
                     onChanged: (String? valve) {
-                      fromText.text = valve!;
+                      // fromText.text = valve!;
                       setState(() {});
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'From',
                       prefixIcon: Icon(Icons.my_location),
                       border: OutlineInputBorder(),
@@ -96,10 +97,10 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                   TextField(
                     controller: toText,
                     onChanged: (String? valve) {
-                      toText.text = valve!;
+                      // toText.text = valve!;
                       setState(() {});
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'To',
                       prefixIcon: Icon(Icons.location_on),
                       border: OutlineInputBorder(),
@@ -117,29 +118,31 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                         .titleMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        fromText.text = 'Pune';
+                        toText.text = 'Hyderabad';
+                      });
+                      Navigator.pop(context);
+                    },
+                    leading: const Icon(Icons.location_pin),
+                    title: const Text('Office'),
+                    subtitle: const Text('Pune to Hyderabad'),
+                    trailing: const Text('560 KM'),
                   ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        fromText.text = 'Mumbai';
+                        toText.text = 'Delhi';
+                      });
+                      Navigator.pop(context);
+                    },
+                    leading: const Icon(Icons.location_pin),
+                    title: const Text('Home'),
+                    subtitle: const Text('Mumbai to Delhi'),
+                    trailing: const Text('1412 KM'),
                   ),
                 ],
               ),
@@ -182,7 +185,7 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                 height: 50,
                 child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.my_location),
                     ),
@@ -204,7 +207,7 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                 height: 50,
                 child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.location_on),
                     ),
@@ -218,13 +221,7 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: TextField(
-                    controller: dateController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Date',
-                      prefixIcon: Icon(Icons.date_range),
-                    ),
+                  child: InkWell(
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -234,28 +231,56 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
                       );
                       if (pickedDate != null) {
                         String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                            DateFormat('yMEd').format(pickedDate);
                         dateController.text = formattedDate;
                         setState(() {});
                       }
                     },
-                    readOnly: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      height: 50,
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.date_range),
+                          ),
+                          Text(dateController.text.isNotEmpty
+                              ? dateController.text
+                              : 'Date'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   flex: 1,
-                  child: TextField(
-                    controller: timeController,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: 'Time',
-                      prefixIcon: const Icon(Icons.access_time),
-                    ),
-                    readOnly: true,
+                  child: InkWell(
                     onTap: () {
                       _selectTime(context);
                     },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      height: 50,
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.access_time),
+                          ),
+                          Text(timeController.text.isNotEmpty
+                              ? timeController.text
+                              : 'Time'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -330,7 +355,12 @@ class _CarHomePageScreenState extends State<CarHomePageScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RideBookingScreen()));
+                      builder: (context) => RideBookingScreen(
+                            fromAdress: fromText.text,
+                            toAdress: toText.text,
+                            date: dateController.text,
+                            time: timeController.text,
+                          )));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff016683),

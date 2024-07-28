@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'car_homepage_screen.dart';
 
 class RideBookingScreen extends StatefulWidget {
-  const RideBookingScreen({super.key});
+  final String fromAdress;
+  final String toAdress;
+  final String date;
+  final String time;
+
+  const RideBookingScreen(
+      {super.key,
+      required this.fromAdress,
+      required this.toAdress,
+      required this.date,
+      required this.time});
 
   @override
   _RideBookingScreenState createState() => _RideBookingScreenState();
@@ -11,7 +22,6 @@ class RideBookingScreen extends StatefulWidget {
 
 class _RideBookingScreenState extends State<RideBookingScreen> {
   TimeOfDay? selectedTime;
-  DateTime? selectedDate;
   int passengers = 1;
 
   Future<void> _selectTime(BuildContext context) async {
@@ -22,13 +32,14 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
     if (pickedTime != null && pickedTime != selectedTime) {
       setState(() {
         selectedTime = pickedTime;
+        timeController.text = selectedTime!.format(context);
       });
     }
   }
 
   void _incrementPassengers() {
     setState(() {
-      passengers++;
+      if (passengers < 6) passengers++;
     });
   }
 
@@ -38,6 +49,19 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
         passengers--;
       }
     });
+  }
+  late TextEditingController fromText;
+  late TextEditingController toText;
+  late TextEditingController dateController;
+  late TextEditingController timeController;
+
+  @override
+  void initState() {
+    super.initState();
+    fromText = TextEditingController(text: widget.fromAdress);
+    toText = TextEditingController(text: widget.toAdress);
+    dateController = TextEditingController(text: widget.date);
+    timeController = TextEditingController(text: widget.time);
   }
 
   showBottomSheetDailog(BuildContext context) {
@@ -76,16 +100,26 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: fromText,
+                    onChanged: (String? valve) {
+                      // fromText.text = valve!;
+                      setState(() {});
+                    },
+                    decoration: const InputDecoration(
                       labelText: 'From',
                       prefixIcon: Icon(Icons.my_location),
                       border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: toText,
+                    onChanged: (String? valve) {
+                      // toText.text = valve!;
+                      setState(() {});
+                    },
+                    decoration: const InputDecoration(
                       labelText: 'To',
                       prefixIcon: Icon(Icons.location_on),
                       border: OutlineInputBorder(),
@@ -103,29 +137,31 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                         .titleMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        fromText.text = 'Pune';
+                        toText.text = 'Hyderabad';
+                      });
+                      Navigator.pop(context);
+                    },
+                    leading: const Icon(Icons.location_pin),
+                    title: const Text('Office'),
+                    subtitle: const Text('Pune to Hyderabad'),
+                    trailing: const Text('560 KM'),
                   ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.location_pin),
-                    title: Text('Office'),
-                    subtitle: Text('London, Best Office, this is good one'),
-                    trailing: Text('26 KM'),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        fromText.text = 'Mumbai';
+                        toText.text = 'Delhi';
+                      });
+                      Navigator.pop(context);
+                    },
+                    leading: const Icon(Icons.location_pin),
+                    title: const Text('Home'),
+                    subtitle: const Text('Mumbai to Delhi'),
+                    trailing: const Text('1412 KM'),
                   ),
                 ],
               ),
@@ -144,8 +180,8 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const CarHomePageScreen()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const CarHomePageScreen()));
           },
         ),
       ),
@@ -164,13 +200,13 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 height: 50,
-                child: const Row(
+                child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.my_location),
                     ),
-                    Text('From'),
+                    Text(fromText.text.isNotEmpty ? fromText.text : 'From'),
                   ],
                 ),
               ),
@@ -186,13 +222,13 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 height: 50,
-                child: const Row(
+                child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.location_on),
                     ),
-                    Text('To'),
+                    Text(toText.text.isNotEmpty ? toText.text : 'To'),
                   ],
                 ),
               ),
@@ -202,12 +238,7 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Date',
-                      prefixIcon: Icon(Icons.date_range),
-                    ),
+                  child: InkWell(
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -216,27 +247,57 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                         lastDate: DateTime(2101),
                       );
                       if (pickedDate != null) {
-                        // Handle the selected date
+                        String formattedDate =
+                            DateFormat('yMEd').format(pickedDate);
+                        dateController.text = formattedDate;
+                        setState(() {});
                       }
                     },
-                    readOnly: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      height: 50,
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.date_range),
+                          ),
+                          Text(dateController.text.isNotEmpty
+                              ? dateController.text
+                              : 'Date'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   flex: 1,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: selectedTime == null
-                          ? 'Time'
-                          : selectedTime!.format(context),
-                      prefixIcon: const Icon(Icons.access_time),
-                    ),
-                    readOnly: true,
+                  child: InkWell(
                     onTap: () {
                       _selectTime(context);
                     },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      height: 50,
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.access_time),
+                          ),
+                          Text(timeController.text.isNotEmpty
+                              ? timeController.text
+                              : 'Time'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -306,7 +367,6 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const SizedBox(height: 20),
             const Text(
               'Available Drivers For You',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -332,9 +392,9 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage(imagePath),
+              // backgroundImage: AssetImage(imagePath),
             ),
             const SizedBox(width: 16),
             Expanded(
